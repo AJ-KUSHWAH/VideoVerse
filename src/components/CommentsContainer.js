@@ -91,44 +91,44 @@ import CommentsList from "./CommentsList";
 
 const commentsData = [
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [],
   },
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [
       {
-        name: "Akshay Saini",
+        name: "Ajay Kushwah",
         text: "Lorem ipsum dolor sit amet, consectetur adip",
         replies: [],
       },
       {
-        name: "Akshay Saini",
+        name: "Ajay Kushwah",
         text: "Lorem ipsum dolor sit amet, consectetur adip",
         replies: [
           {
-            name: "Akshay Saini",
+            name: "Ajay Kushwah",
             text: "Lorem ipsum dolor sit amet, consectetur adip",
             replies: [
               {
-                name: "Akshay Saini",
+                name: "Ajay Kushwah",
                 text: "Lorem ipsum dolor sit amet, consectetur adip",
                 replies: [
                   {
-                    name: "Akshay Saini",
+                    name: "Ajay Kushwah",
                     text: "Lorem ipsum dolor sit amet, consectetur adip",
                     replies: [
                       {
-                        name: "Akshay Saini",
+                        name: "Ajay Kushwah",
                         text: "Lorem ipsum dolor sit amet, consectetur adip",
                         replies: [],
                       },
                     ],
                   },
                   {
-                    name: "Akshay Saini",
+                    name: "Ajay Kushwah",
                     text: "Lorem ipsum dolor sit amet, consectetur adip",
                     replies: [],
                   },
@@ -141,22 +141,22 @@ const commentsData = [
     ],
   },
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [],
   },
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [],
   },
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [],
   },
   {
-    name: "Akshay Saini",
+    name: "Ajay Kushwah",
     text: "Lorem ipsum dolor sit amet, consectetur adip",
     replies: [],
   },

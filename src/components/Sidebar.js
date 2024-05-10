@@ -14,30 +14,30 @@ const Sidebar = () => {
     
       <ul className='px-4 m-2 border-b-2' > 
         <Link to="/"><li className='p-1 '>Home</li></Link>
-        <li className='p-1'>Shorts</li>
-        <li className='p-1'>Subscriptions</li>
+        <li className='p-1 shadow-sm'>Shorts</li>
+        <li className='p-1 shadow-sm'>Subscriptions</li>
       </ul>
 
       <h1 className=' text-md font-bold px-5 mx-2'>You</h1>
       <ul className='px-4 m-2 border-b-2'>
-        <li className='p-1 '>Liked Videos</li>
-        <li className='p-1 '>Watched</li>
-        <li className='p-1 '>History</li>
-        <li className='p-1 '>Downloads</li>
+        <li className='p-1 shadow-sm'>Liked Videos</li>
+        <li className='p-1 shadow-sm'>Watched</li>
+        <li className='p-1 shadow-sm'>History</li>
+        <li className='p-1 shadow-sm'>Downloads</li>
       </ul>
       <h1 className=' text-md font-bold px-5 mx-2'>Subscriptions</h1>
       <ul className='px-4 m-2 border-b-2'>
-        <li className='p-1 '>ajay</li>
-        <li className='p-1 '>NR</li>
-        <li className='p-1 '>Shark Tank</li>
-        <li className='p-1 '>Fittness</li>
+        <li className='p-1 shadow-sm'>ajay</li>
+        <li className='p-1 shadow-sm'>NR</li>
+        <li className='p-1 shadow-sm'>Shark Tank</li>
+        <li className='p-1 shadow-sm'>Fittness</li>
       </ul>
       <h1 className=' text-md font-bold px-5 mx-2'>Explore</h1>
       <ul className='px-4 m-2 border-b-2'>
-        <li className='p-1 '>Trending</li>
-        <li className='p-1 '>Music</li>
-        <li className='p-1 '>Sports</li>
-        <li className='p-1 '>Films</li>
+        <li className='p-1 shadow-sm'>Trending</li>
+        <li className='p-1 shadow-sm'>Music</li>
+        <li className='p-1 shadow-sm'>Sports</li>
+        <li className='p-1 shadow-sm'>Films</li>
       </ul>
     </div>
   )

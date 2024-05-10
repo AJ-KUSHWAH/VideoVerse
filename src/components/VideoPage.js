@@ -16,9 +16,9 @@ const VideoPage = () => {
   let videoId = searchParams.get("v");
 
   return (
-    <div className="px-24 py-10 rounded-lg">
+    <div className=" px-24 py-10 ">
       <div className="flex ">
-        <div>
+        <div className="rounded-lg">
           <iframe
             width="950"
             height="500"
@@ -28,7 +28,7 @@ const VideoPage = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
           ></iframe>
-          <div className="m-2 p-2 h-20 border border-black">
+          <div className="m-2 p-2 h-auto border border-black overflow-auto">
             <h1 className="text-xl font-bold">Video Title</h1>
             <div className="flex my-2">
               <img
@@ -40,8 +40,8 @@ const VideoPage = () => {
               <button className="mx-2 size-max rounded-lg bg-slate-500">
                 Subscribe
               </button>
-              <div className="flex mx-60">
-                <div className="rounded-full shadow-sm bg-slate-300">
+              <div className="flex flex-row-reverse mx-auto">
+                <div className="flex rounded-full shadow-sm bg-slate-300">
                   <button className="mx-2">👍</button>
                   <button className="mx-2">👎</button>
                 </div>

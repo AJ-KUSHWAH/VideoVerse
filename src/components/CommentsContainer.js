@@ -1,85 +1,70 @@
-import React from "react";
-import CommentsList from "./CommentsList";
+import React, { useEffect, useState } from "react";
+import { YOUTUBE_COMMENT_THREAD_API } from "../utilities/Constants";
 
-const commentsData = [
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [],
-  },
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [
-      {
-        name: "Ajay Kushwah",
-        text: "Lorem ipsum dolor sit amet, consectetur adip",
-        replies: [],
+const Comment = ({ data }) => {
+  const {
+    id,
+    snippet: {
+      topLevelComment: {
+        snippet: { authorDisplayName, authorProfileImageUrl, textOriginal },
       },
-      {
-        name: "Ajay Kushwah",
-        text: "Lorem ipsum dolor sit amet, consectetur adip",
-        replies: [
-          {
-            name: "Ajay Kushwah",
-            text: "Lorem ipsum dolor sit amet, consectetur adip",
-            replies: [
-              {
-                name: "Ajay Kushwah",
-                text: "Lorem ipsum dolor sit amet, consectetur adip",
-                replies: [
-                  {
-                    name: "Ajay Kushwah",
-                    text: "Lorem ipsum dolor sit amet, consectetur adip",
-                    replies: [
-                      {
-                        name: "Ajay Kushwah",
-                        text: "Lorem ipsum dolor sit amet, consectetur adip",
-                        replies: [],
-                      },
-                    ],
-                  },
-                  {
-                    name: "Ajay Kushwah",
-                    text: "Lorem ipsum dolor sit amet, consectetur adip",
-                    replies: [],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [],
-  },
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [],
-  },
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [],
-  },
-  {
-    name: "Ajay Kushwah",
-    text: "Lorem ipsum dolor sit amet, consectetur adip",
-    replies: [],
-  },
-];
+    },
+  } = data;
 
-const CommentsContainer = () => {
   return (
-    <div className="m-5 p-2">
-      <h1 className="text-2xl font-bold">Comments: </h1>
-      <CommentsList comments={commentsData} />
+    <div className="p-3 flex items-start gap-3 border border-gray-200 rounded-lg m-3 w-auto break-all">
+      <button className=" border border-black rounded-3xl min-h-[2rem] min-w-[2rem] h-8 w-8">
+        <img
+          src={authorProfileImageUrl}
+          alt={authorDisplayName}
+          className="rounded-full"
+        />
+      </button>
+      <div className="flex flex-col gap-1">
+        <p className="font-bold text-sm">{authorDisplayName}</p>
+        <p>{textOriginal}</p>
+      </div>
     </div>
   );
 };
-export default CommentsContainer;
+
+const CommentList = ({ comment }) => {
+  return (
+    comment &&
+    comment.map((data) => (
+      <div key={data.id}>
+        <Comment data={data} />
+
+        {/* N level nested comment thread... Add replies */}
+
+        {/* <div className="ml-8 pl-1 border border-black border-t-0 border-l-2 border-r-0 border-b-0">
+          <CommentList comment={data.replies} />
+        </div> */}
+      </div>
+    ))
+  );
+};
+
+const CommentContainer = ({ commentCount, videoID }) => {
+  const [commentThreads, setCommentThreads] = useState();
+  useEffect(() => {
+    const getCommentThread = async () => {
+      const res = await fetch(YOUTUBE_COMMENT_THREAD_API(videoID));
+      const data = await res.json();
+      setCommentThreads(data?.items);
+    };
+    getCommentThread();
+  }, []);
+
+  return (
+    <div>
+      <div className="text-xl font-bold mt-5 w-auto">
+        {" "}
+        {commentCount} Comments{" "}
+      </div>
+      <CommentList comment={commentThreads} />
+    </div>
+  );
+};
+
+export default CommentContainer;

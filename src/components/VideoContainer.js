@@ -1,35 +1,71 @@
-import React, { useEffect, useState } from 'react'
-import VideoCard, { AdVideoCard } from './VideoCard'
-import ButtonList from './ButtonList'
-import { YOUTUBE_API_URL } from '../utilities/Constants'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import VideoCard from "./VideoCard";
+import Shimmer from "./Shimmer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  allFilterVideosHandler,
+  apiCallHander,
+  fetchVideoList,
+} from "../utilities/videoSlice";
 
 const VideoContainer = () => {
-  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
-useEffect(() => {
-  getVideos();
-}, []);
+  const { allVideos, allFilterVideos, isApiCalled, status } = useSelector(
+    (store) => store.videos
+  );
 
-const getVideos = async () => {
-  try {
-    const data = await fetch(YOUTUBE_API_URL);
-    const json = await data.json();
-    setVideos(json.items);
-  } catch (error) {
-    console.error('Error fetching videos:', error);
+  useEffect(() => {
+    try {
+      if (!isApiCalled) {
+        dispatch(fetchVideoList());
+        dispatch(apiCallHander());
+        // dispatch(allFilterVideosHandler());
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    } catch (error) {
+      setError(true);
+    }
+  }, [dispatch, isApiCalled]);
+
+  if (error || status === "failed") {
+    return (
+      <p className="flex items-center justify-center h-[60vh] text-3xl font-bold">
+        Oops! Something went wrong 😬{" "}
+      </p>
+    );
   }
-};
 
   return (
-    <div className=''>
-      <ButtonList />
-      <div className='flex flex-wrap p-2 m-2'>
-      { videos[0] && <AdVideoCard info={videos[0]} />}
-      {videos.map((video)=> <Link key={video.id} to={"watch?v=" + video.id}> <VideoCard  info={video} /> </Link>)}
-      </div>
+    <div>
+      {loading || status === "loading" || allVideos?.length === 0 ? (
+        <Shimmer />
+      ) : (
+        <div
+          style={{ width: "100%", height: "100%" }}
+          className="flex flex-wrap gap-4 my-4 justify-between max-sm:justify-center"
+        >
+          {allFilterVideos?.length === 0 ? (
+            <h1 className="flex items-center justify-center h-[60vh] text-3xl font-bold">
+              No Videos Found
+            </h1>
+          ) : (
+            <>
+              {allFilterVideos.map((video) => (
+                <div key={video.etag}>
+                  <VideoCard info={video} />
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default VideoContainer;

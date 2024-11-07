@@ -1,4 +1,4 @@
-var nameList = [
+export const nameList = [
   "Time",
   "Past",
   "Future",
@@ -175,19 +175,29 @@ var nameList = [
   "Paradox",
 ];
 
-export function generateRandomNames() {
-  return nameList[Math.floor(Math.random() * nameList.length)];
-}
+export const shortLiveChatMessages = [
+  "Hi!",
+  "Hello!",
+  "Hey there!",
+  "Welcome!",
+  "How can I help?",
+  "Need assistance?",
+  "Any questions?",
+  "Here to help!",
+  "Chat with us!",
+  "Hello, there!",
+  "Hiya!",
+  "Greetings!",
+  "Ready to assist!",
+  "Ask away!",
+  "Hi! 😊",
+  "Hello! 🌟",
+  "Hey! 👋",
+  "Need support?",
+  "How may I assist?",
+  "Hi there! 🌼",
+];
 
-export function generateRandomMessages(length) {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  let counter = 0;
-  while (counter < length) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    counter += 1;
-  }
-  return result;
+export function generateUserName(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }

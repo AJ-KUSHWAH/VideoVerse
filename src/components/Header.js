@@ -50,7 +50,7 @@ const Header = () => {
   // console.log(isAuthenticated);
 
   return (
-    <div className="grid grid-flow-col p-2 m-2 shadow-lg">
+    <div className="grid grid-flow-col p-2 m-2 shadow-lg dark">
       <div className="flex col-span-1 ">
         <img
           onClick={() => handleToggleMenu()}
@@ -88,7 +88,7 @@ const Header = () => {
         )}
       </div>
 
-      <div className="ml-56">
+      <div className="flex ml-56">
         {isAuthenticated ? (
           <img src={user.picture} alt={user.name}></img>
         ) : (
@@ -111,6 +111,7 @@ const Header = () => {
         ) : (
           <button onClick={() => loginWithRedirect()}>Log In</button>
         )} */}
+        <button className="mx-8">Mode</button>
       </div>
     </div>
   );

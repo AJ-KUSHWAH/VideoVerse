@@ -1,13 +1,31 @@
-import React from 'react'
-import VideoContainer from './VideoContainer'
+import React, { Suspense, lazy, useEffect } from "react";
+import ButtonList from "./ButtonList";
+import { useDispatch, useSelector } from "react-redux";
+import { openMenu } from "../utilities/appSlice";
+import Shimmer from "./Shimmer";
+
+const VideoContainer = lazy(() => import("./VideoContainer"));
 
 const MainContainer = () => {
-  return (
-    <div className='flex'>
-        
-        <VideoContainer />
-    </div>
-  )
-}
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
+  const dispatch = useDispatch();
 
-export default MainContainer
+  useEffect(() => {
+    dispatch(openMenu());
+  }, [dispatch]);
+
+  return (
+    <div
+      className={`${isMenuOpen && "flex-[0.85]"} max-sm:${
+        isMenuOpen && "flex-1"
+      }  px-6 pt-8 `}
+    >
+      <ButtonList />
+      <Suspense fallback={<Shimmer />}>
+        <VideoContainer />
+      </Suspense>
+    </div>
+  );
+};
+
+export default MainContainer;

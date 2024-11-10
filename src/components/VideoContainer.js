@@ -12,6 +12,7 @@ const VideoContainer = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
 
   const { allVideos, allFilterVideos, isApiCalled, status } = useSelector(
     (store) => store.videos
@@ -46,8 +47,11 @@ const VideoContainer = () => {
         <Shimmer />
       ) : (
         <div
-          style={{ width: "100%", height: "100%" }}
-          className="flex flex-wrap gap-4 my-4 justify-between max-sm:justify-center"
+          className={`grid  mx-auto my-8  ${
+            isMenuOpen
+              ? "grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 w-fit mx-20 gap-2"
+              : "grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2"
+          }`}
         >
           {allFilterVideos?.length === 0 ? (
             <h1 className="flex items-center justify-center h-[60vh] text-3xl font-bold">

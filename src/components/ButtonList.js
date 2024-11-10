@@ -33,18 +33,16 @@ const ButtonList = () => {
   };
 
   return (
-    <div className="flex items-center relative mr-5 ">
+    <div className="flex items-center relative mr-2 ml-4 ">
       {/* <div className="flex items-center absolute left-0">
         <i className="fa-solid fa-angle-left fa-xl pr-4 py-5 gray-50"></i>
         <div className=" bg-gradient-to-r from-gray-50 py-5 w-4"></div>
       </div> */}
 
       <div
-        className={` overflow-x-scroll overflow-y-hidden whitespace-nowrap  ${
-          isMenuOpen
-            ? " max-2xl:w-[80rem] max-xl:w-[52rem] max-lg:w-[34rem] max-md:w-[22rem] ]"
-            : "xl:w-[98rem]"
-        } max-sm:w-[22rem]  `}
+        className={`overflow-x-auto whitespace-nowrap no-scrollbar w-full ${
+          isMenuOpen ? "max-w-[85%]" : "max-w-full"
+        }`}
       >
         {buttonList.map((name, index) => (
           <ul key={index} className="inline-block">
@@ -61,11 +59,11 @@ const ButtonList = () => {
           </ul>
         ))}
       </div>
-
+      {/* 
       <div className="flex items-center absolute right-0">
         <div className=" bg-gradient-to-l from-gray-50 py-5 w-4"></div>
         <i className="fa-solid fa-angle-right fa-xl pl-4 py-5 bg-gray-50"></i>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -2,7 +2,7 @@ const API_KEY = "AIzaSyCXkV_5I3NaHm6GxDTTHWJfgtSigYLTPNc";
 
 export const YOUTUBE_API_URL = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=50&regionCode=IN&key=${API_KEY}`;
 
-export const YOUTUBE_SEARCH_API =
+export const YOUTUBE_SUGGESTION_API =
   "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=";
 
 export const LIVE_CHAT_COUNT = 15;

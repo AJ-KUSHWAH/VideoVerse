@@ -57,7 +57,7 @@ const VideoCard = ({ info }) => {
       ) : (
         <Link to={"/watch?v=" + video_id}>
           <div
-            className={`shadow-md rounded-lg p-3 bg-white h-full ${
+            className={`shadow-md rounded-lg p-4 bg-white h-full ${
               isMenuOpen ? "  w-96" : " w-[22rem]"
             } max-sm:w-[22rem]`}
           >

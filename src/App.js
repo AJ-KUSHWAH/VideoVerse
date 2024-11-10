@@ -1,7 +1,6 @@
 import { Provider } from "react-redux";
 import "./App.css";
 import Body from "./components/Body";
-import Header from "./components/Header";
 import store from "./utilities/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MainContainer from "./components/MainContainer";
@@ -27,8 +26,7 @@ const appRouter = createBrowserRouter([
 function App() {
   return (
     <Provider store={store}>
-      <div className="dark dark:bg-black">
-        <Header />
+      <div>
         <RouterProvider router={appRouter} />
       </div>
     </Provider>

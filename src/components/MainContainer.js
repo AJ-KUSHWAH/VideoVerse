@@ -16,9 +16,12 @@ const MainContainer = () => {
 
   return (
     <div
-      className={`${isMenuOpen && "flex-[0.85]"} max-sm:${
-        isMenuOpen && "flex-1"
-      }  px-6 pt-8 `}
+      className={`w-full no-scrollbar ${
+        isMenuOpen ? "flex-[0.85]" : "flex-1"
+      } px-2 pt-8 max-w-full`}
+      // className={`${isMenuOpen && "flex-[0.85]"} max-sm:${
+      //   isMenuOpen && "flex-1"
+      // }  px-2 pt-8 max-w-full `}
     >
       <ButtonList />
       <Suspense fallback={<Shimmer />}>

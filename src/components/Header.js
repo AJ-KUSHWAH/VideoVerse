@@ -1,117 +1,168 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../utilities/appSlice";
-import { YOUTUBE_SEARCH_API } from "../utilities/Constants";
+import { menuToggle } from "../utilities/appSlice";
+import {
+  YOUTUBE_CATEGORY_VIDEO_API,
+  YOUTUBE_SUGGESTION_API,
+} from "../utilities/Constants";
 import { cacheResults } from "../utilities/searchSlice";
-import { useAuth0 } from "@auth0/auth0-react";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { searchFilterData } from "../utilities/functions/searchFilterData";
+import { allFilterVideosHandler } from "../utilities/videoSlice";
+import {
+  createIcon,
+  hamburgerIcon,
+  notificationIcon,
+  speechIcon,
+  userIcon,
+} from "../assets/image-constant";
+import logo from "../assets/logo.png";
 
 const Header = () => {
-  const { user, loginWithRedirect, isAuthenticated } = useAuth0();
+  const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestionList, setSuggestionList] = useState([]);
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const searchCache = useSelector((store) => store.search);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const allVideos = useSelector((store) => store.videos.allVideos);
+  const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchCache[searchQuery]) {
-        setSuggestions(searchCache[searchQuery]);
+        setSuggestionList(searchCache[searchQuery]);
       } else {
-        getSearchSuggestion();
+        fetchSuggestionsHandler();
       }
-    }, 200);
-    return () => {
-      clearTimeout(timer);
-    };
+
+      if (searchQuery === "") {
+        fetchSuggestionsHandler();
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const getSearchSuggestion = async () => {
-    // console.log(searchQuery);
-    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
-    const json = await data.json();
-    // console.log(json);
-    setSuggestions(json[1]);
-
-    // console.log(json[1]);
+  const fetchSuggestionsHandler = async () => {
+    const response = await fetch(YOUTUBE_SUGGESTION_API + searchQuery);
+    const data = await response.json();
+    setSuggestionList(data[1]);
 
     dispatch(
       cacheResults({
-        [searchQuery]: json[1],
+        [searchQuery]: data[1],
       })
     );
   };
 
-  const handleToggleMenu = () => {
-    dispatch(toggleMenu());
+  const suggestionClickHandler = (suggestion) => {
+    setSearchQuery(suggestion);
+    setIsSuggestionOpen(false);
   };
 
-  // console.log(isAuthenticated);
+  const getVideosByCategory = async (activeButton) => {
+    const res = await fetch(YOUTUBE_CATEGORY_VIDEO_API(activeButton));
+    const data = await res.json();
+    dispatch(allFilterVideosHandler(data.items));
+  };
+
+  const searchHandler = (searchQuery) => {
+    navigate("/");
+    const data = searchFilterData(searchQuery, allVideos);
+    if (data.length === 0) {
+      getVideosByCategory(searchQuery);
+    } else {
+      dispatch(allFilterVideosHandler(data));
+    }
+    setIsSuggestionOpen(false);
+  };
 
   return (
-    <div className="grid grid-flow-col p-2 m-2 shadow-lg dark">
-      <div className="flex col-span-1 ">
+    <div className="sticky top-0 bg-white  flex gap-3 justify-between shadow-md p-4 items-center z-50">
+      <div className="flex gap-5 max-sm:gap-0">
         <img
-          onClick={() => handleToggleMenu()}
-          className="h-8"
-          alt="menu"
-          src="https://assets.stickpng.com/images/588a6507d06f6719692a2d15.png"
-        ></img>
-        <img
-          className="h-8 ml-4"
-          alt="logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/640px-Logo_of_YouTube_%282015-2017%29.svg.png"
-        ></img>
+          src={hamburgerIcon}
+          alt="hamburger"
+          className="h-10 border border-gray-600 p-1 rounded-sm max-md:block"
+          onClick={() => dispatch(menuToggle())}
+          loading="lazy"
+        />
+        <Link to="/">
+          <img
+            src={logo}
+            alt="logo"
+            className={`h-8 max-md:hidden ${
+              isMenuOpen ? "hidden" : ""
+            } lg:block xl:block md:hidden sm:hidden`}
+            loading="lazy"
+          />
+        </Link>
       </div>
-      <div className="col-span-3 w-full">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setShowSuggestions(true)}
-          onBlur={() => setShowSuggestions(false)}
-          className="w-10/12 rounded-l-full border border-gray-600"
-        ></input>
-        <button className="rounded-r-full border border-gray-600">
-          search
+
+      <div className="flex-1 flex justify-center">
+        <form
+          className=" relative "
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchHandler(searchQuery);
+          }}
+        >
+          <input
+            type="text"
+            value={searchQuery}
+            className="border border-gray-600 w-[33rem] flex-1 p-1 px-4 h-11 rounded-l-3xl max-lg:w-96 max-sm:w-44 max-sm:pr-2"
+            onFocus={() => setIsSuggestionOpen(true)}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+
+          {isSuggestionOpen && (
+            <div className="absolute bg-white w-[33rem] border-t-0 border-r-1 border-b-1 border-l-1 border-gray-200 m-[1px] shadow-lg rounded-xl z-30 max-lg:w-96 max-sm:w-56">
+              <ul>
+                {suggestionList.map((suggestion) => (
+                  <li
+                    className="m-2 p-2 px-4 mb-1 rounded-md shadow-sm cursor-pointer hover:bg-gray-100"
+                    key={suggestion}
+                    onClick={() => suggestionClickHandler(suggestion)}
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </form>
+
+        <button
+          className="bg-gray-300 border border-slate-600 p-1 px-3 rounded-r-3xl text-lg "
+          onClick={() => searchHandler(searchQuery)}
+        >
+          🔍
+        </button>
+        <button className="bg-gray-300 border p-2 ml-5 max-sm:ml-2 rounded-3xl">
+          <img src={speechIcon} alt="speak" className="h-6" loading="lazy" />
+        </button>
+      </div>
+
+      <div className=" flex gap-3">
+        <button className=" p-1 max-sm:hidden">
+          <img src={createIcon} alt="create" className="h-7" loading="lazy" />
+        </button>
+        <button className="p-1 max-sm:hidden">
+          <img
+            src={notificationIcon}
+            alt="notification"
+            className="h-7 w-auto"
+            loading="lazy"
+          />
         </button>
 
-        {showSuggestions && (
-          <div className="fixed bg-white py-2 px-5 w-[39rem]">
-            <ul>
-              {suggestions.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="flex ml-56">
-        {isAuthenticated ? (
-          <img src={user.picture} alt={user.name}></img>
-        ) : (
-          <img
-            className="h-8"
-            alt="user-icon"
-            src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png"
-            onClick={() => loginWithRedirect()}
-          ></img>
-        )}
-
-        {/* {isAuthenticated ? (
-          <button
-            onClick={() =>
-              logout({ logoutParams: { returnTo: window.location.origin } })
-            }
-          >
-            logout
-          </button>
-        ) : (
-          <button onClick={() => loginWithRedirect()}>Log In</button>
-        )} */}
-        <button className="mx-8">Mode</button>
+        {/* <Link to="/login"> */}
+        <button className="p-2 border-2 border-black rounded-3xl">
+          <img src={userIcon} alt="user icon" className="h-5" loading="lazy" />
+        </button>
+        {/* </Link> */}
       </div>
     </div>
   );

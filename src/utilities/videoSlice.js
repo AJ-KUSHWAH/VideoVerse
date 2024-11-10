@@ -13,8 +13,8 @@ export const fetchVideoList = createAsyncThunk(
 const videoSlice = createSlice({
   name: "videos",
   initialState: {
-    allVideos: [],
-    allFilterVideos: [],
+    allVideos: undefined,
+    allFilterVideos: undefined,
     isApiCalled: false,
     status: "idle",
     error: "",
